@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TaskHive helps you manage tasks, projects, priorities, and deadlines.">
+    <title>TaskHive | Project Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <a href="#dashboard" class="brand">
+            <svg class="brand-logo" viewBox="0 0 48 48" aria-hidden="true">
+                <path d="M24 4 39 13 39 30 24 40 9 30 9 13Z"
+                      fill="none" stroke="currentColor" stroke-width="3.5"/>
+                <path d="M24 12 32 17 32 27 24 32 16 27 16 17Z"
+                      fill="none" stroke="#8B83FF" stroke-width="3"/>
+            </svg>
+            <span>TaskHive</span>
+        </a>
+
+        <p class="nav-heading">WORKSPACE</p>
+        <nav class="navigation" aria-label="Main navigation">
+            <a href="#dashboard" class="nav-link active" data-page="dashboard">▦ Dashboard</a>
+            <a href="#tasks" class="nav-link" data-page="tasks">☷ My Tasks</a>
+            <a href="#projects" class="nav-link" data-page="projects">▣ Projects</a>
+            <a href="#team" class="nav-link" data-page="team">♧ Team</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="profile-avatar">V</div>
+            <div>
+                <strong>Viresh</strong>
+                <p>Workspace Owner</p>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <section id="dashboard" class="page-section">
+            <header class="page-header">
+                <div>
+                    <p class="eyebrow">WORKSPACE / OVERVIEW</p>
+                    <h1>Welcome back, Viresh 👋</h1>
+                    <p class="subtitle">Here's what's happening with your work.</p>
+                </div>
+                <button class="primary-btn" id="addTaskBtn">+ New Task</button>
+            </header>
+
+            <section class="stats-grid" aria-label="Task statistics">
+                <article class="stat-card">
+                    <p>Total Tasks</p><h2 id="totalTasks">0</h2>
+                    <span>All workspace tasks</span>
+                </article>
+                <article class="stat-card">
+                    <p>In Progress</p><h2 id="progressTasks">0</h2>
+                    <span>Currently being worked on</span>
+                </article>
+                <article class="stat-card">
+                    <p>Completed</p><h2 id="completedTasks">0</h2>
+                    <span>Finished tasks</span>
+                </article>
+                <article class="stat-card">
+                    <p>Overdue</p><h2 id="overdueTasks">0</h2>
+                    <span>Past their deadlines</span>
+                </article>
+            </section>
+
+            <section class="content-card">
+                <div class="section-header">
+                    <div>
+                        <h2>Task Workspace</h2>
+                        <p class="subtitle">Search and organize your tasks.</p>
+                    </div>
+                </div>
+
+                <div class="toolbar">
+                    <input id="searchInput" type="search"
+                           placeholder="Search tasks or categories..."
+                           aria-label="Search tasks">
+
+                    <select id="statusFilter" aria-label="Filter by status">
+                        <option value="all">All statuses</option>
+                        <option value="To Do">To Do</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+
+                    <select id="priorityFilter" aria-label="Filter by priority">
+                        <option value="all">All priorities</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+
+                    <select id="sortTasks" aria-label="Sort tasks">
+                        <option value="newest">Newest first</option>
+                        <option value="oldest">Oldest first</option>
+                        <option value="priority">Highest priority</option>
+                        <option value="deadline">Nearest deadline</option>
+                        <option value="title">Task name A–Z</option>
+                    </select>
+                </div>
+
+                <div id="taskList" class="task-list"></div>
+                <p id="taskCount" class="subtitle task-count"></p>
+            </section>
+        </section>
+
+        <section id="tasks" class="page-section secondary-page">
+            <header class="page-header">
+                <div>
+                    <p class="eyebrow">WORKSPACE / TASKS</p>
+                    <h1>My Tasks</h1>
+                    <p class="subtitle">Manage your tasks in one place.</p>
+                </div>
+                <button class="primary-btn" data-open-modal>+ New Task</button>
+            </header>
+            <div class="content-card">
+                <h2>All Tasks</h2>
+                <p class="subtitle">Use the Dashboard to search, filter, sort, and update tasks.</p>
+                <button class="secondary-btn" data-page-link="dashboard">Open Dashboard</button>
+            </div>
+        </section>
+
+        <section id="projects" class="page-section secondary-page">
+            <header class="page-header">
+                <div>
+                    <p class="eyebrow">WORKSPACE / PROJECTS</p>
+                    <h1>My Projects</h1>
+                    <p class="subtitle">Organize work into projects.</p>
+                </div>
+                <button class="primary-btn" id="addProjectBtn">+ New Project</button>
+            </header>
+            <div id="projectList" class="project-grid"></div>
+        </section>
+
+        <section id="team" class="page-section secondary-page">
+            <header class="page-header">
+                <div>
+                    <p class="eyebrow">WORKSPACE / TEAM</p>
+                    <h1>Team Workspace</h1>
+                    <p class="subtitle">Manage your workspace members.</p>
+                </div>
+                <button class="primary-btn" id="addMemberBtn">+ Add Member</button>
+            </header>
+            <div class="content-card">
+                <h2>Workspace Members</h2>
+                <p class="subtitle">This local demo stores member names in your browser. It does not send invitations or provide real multi-user collaboration.</p>
+                <div id="teamList" class="team-list"></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Task creation modal -->
+<dialog id="taskModal" class="task-modal">
+    <form id="taskForm">
+        <div class="modal-header">
+            <div>
+                <h2>Create a Task</h2>
+                <p class="subtitle">Add the details for your next task.</p>
+            </div>
+            <button type="button" id="closeModalBtn" class="icon-btn"
+                    aria-label="Close form">✕</button>
+        </div>
+
+        <label for="taskTitle">Task name *</label>
+        <input id="taskTitle" name="title" maxlength="100"
+               placeholder="e.g. Build the login page" required>
+
+        <label for="taskCategory">Category</label>
+        <input id="taskCategory" name="category" maxlength="50"
+               placeholder="e.g. Development" value="General">
+
+        <div class="form-row">
+            <div>
+                <label for="taskPriority">Priority</label>
+                <select id="taskPriority" name="priority">
+                    <option value="High">High</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+            </div>
+            <div>
+                <label for="taskStatus">Status</label>
+                <select id="taskStatus" name="status">
+                    <option value="To Do">To Do</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+        </div>
+
+        <label for="taskDueDate">Deadline (optional)</label>
+        <input id="taskDueDate" name="dueDate" type="date">
+
+        <label for="taskProject">Project</label>
+        <select id="taskProject" name="projectId">
+            <option value="">No project</option>
+        </select>
+
+        <div class="modal-actions">
+            <button type="button" id="cancelModalBtn" class="secondary-btn">Cancel</button>
+            <button type="submit" class="primary-btn">Save Task</button>
+        </div>
+    </form>
+</dialog>
+
+<script src="script.js"></script>
+</body>
+</html>
